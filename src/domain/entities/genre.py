@@ -1,7 +1,7 @@
 from uuid import uuid4, UUID
 from dataclasses import dataclass
 
-from domain.entities.base import Entity
+from domain.entities import Entity
 
 
 @dataclass(frozen=True)

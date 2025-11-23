@@ -2,9 +2,12 @@ from uuid import uuid4, UUID
 from datetime import datetime
 from dataclasses import dataclass, field
 
-from domain.entities.base import Entity
-from domain.entities.media_file import MediaFile
-from domain.value_objects.image_urls import ImageUrls
+from domain.entities import Entity, MediaFile
+from domain.value_objects import ImageUrls
+from domain.exceptions import (
+        MediaFileExistsError,
+        MediaFileNotFoundError
+)
 
 
 @dataclass
@@ -44,7 +47,7 @@ class Album(Entity):
 
     def add_media_file(self, media_file: MediaFile) -> None:
         if any(m.id == media_file.id for m in self.media_files):
-            raise ValueError("Media file already in the album")
+            raise MediaFileExistsError(media_file.id)
 
         self.media_files.append(media_file)
         self.song_count += 1
@@ -55,7 +58,7 @@ class Album(Entity):
         media_file = next(
             (m for m in self.media_files if m.id == media_file_id), None)
         if not media_file:
-            raise ValueError("Media file not found in the album")
+            raise MediaFileNotFoundError(media_file_id)
 
         self.media_files.remove(media_file)
         self.song_count -= 1

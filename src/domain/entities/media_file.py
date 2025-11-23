@@ -2,8 +2,8 @@ from uuid import uuid4, UUID
 from datetime import datetime
 from dataclasses import dataclass, field
 
-from domain.entities.base import Entity
-from domain.value_objects.media_file_metadata import MediaFileMetadata
+from domain.entities import Entity
+from domain.value_objects import MediaFileMetadata
 
 
 @dataclass
@@ -11,7 +11,7 @@ class MediaFile(Entity):
     id: UUID
     title: str
     track_number: int
-    disk_number: int
+    disc_number: int
     created_at: datetime
     year: int
     duration: float
@@ -23,7 +23,7 @@ class MediaFile(Entity):
     def create(
         title: str,
         track_number: int,
-        disk_number: int,
+        disc_number: int,
         year: int,
         duration: float,
         compilation: bool,
@@ -33,7 +33,7 @@ class MediaFile(Entity):
             id=uuid4(),
             title=title,
             track_number=track_number,
-            disk_number=disk_number,
+            disc_number=disc_number,
             created_at=datetime.now(),
             year=year,
             duration=duration,

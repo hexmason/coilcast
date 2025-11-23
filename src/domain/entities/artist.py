@@ -1,9 +1,12 @@
 from uuid import uuid4, UUID
 from dataclasses import dataclass, field
 
-from domain.entities.base import Entity
-from domain.entities.album import Album
-from domain.value_objects.image_urls import ImageUrls
+from domain.entities import Entity, Album
+from domain.value_objects import ImageUrls
+from domain.exceptions import (
+        AlbumExistsError,
+        AlbumNotFoundError
+)
 
 
 @dataclass
@@ -19,7 +22,6 @@ class Artist(Entity):
     @staticmethod
     def create(
         name: str,
-        album_count: int,
         biography: str,
         music_brainz_id: str,
         image_urls: ImageUrls
@@ -27,7 +29,6 @@ class Artist(Entity):
         return Artist(
             id=uuid4(),
             name=name,
-            album_count=album_count,
             biography=biography,
             music_brainz_id=music_brainz_id,
             image_urls=image_urls
@@ -35,7 +36,7 @@ class Artist(Entity):
 
     def add_album(self, album: Album) -> None:
         if any(a.id == album.id for a in self.albums):
-            raise ValueError("Artist already has this album")
+            raise AlbumExistsError(album.id)
 
         self.albums.append(album)
         self.album_count += 1
@@ -43,4 +44,4 @@ class Artist(Entity):
     def remove_album(self, album_id: UUID) -> None:
         album = next((a for a in self.albums if a.id == album_id), None)
         if not album:
-            raise ValueError("Album not found for the artist")
+            raise AlbumNotFoundError(album_id)
