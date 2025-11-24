@@ -21,11 +21,16 @@ class Artist(Entity):
 
     @staticmethod
     def create(
-        name: str,
-        biography: str,
-        music_brainz_id: str,
-        image_urls: ImageUrls
+        name: str | None,
+        biography: str | None,
+        music_brainz_id: str | None,
+        image_urls: ImageUrls | None
     ) -> "Artist":
+        name = name or "Unknown artist"
+        biography = biography or ""
+        music_brainz_id = music_brainz_id or ""
+        image_urls = image_urls or ImageUrls()
+
         return Artist(
             id=uuid4(),
             name=name,

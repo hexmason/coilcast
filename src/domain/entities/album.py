@@ -20,18 +20,24 @@ class Album(Entity):
     comment: str
     image_urls: ImageUrls
     song_count: int = field(default=0)
-    duration: float = field(default=0)
+    duration: float = field(default=0.0)
     play_count: int = field(default=0)
     media_files: list = field(default_factory=list)
 
     @staticmethod
     def create(
-        name: str,
-        compilation: bool,
-        year: int,
-        comment: str,
-        image_urls: ImageUrls
+        name: str | None,
+        compilation: bool | None,
+        year: int | None,
+        comment: str | None,
+        image_urls: ImageUrls | None
     ) -> "Album":
+        name = name or "Unknown Album"
+        compilation = compilation or False
+        year = year or 0
+        comment = comment or ""
+        image_urls = image_urls or ImageUrls()
+
         return Album(
             id=uuid4(),
             name=name,

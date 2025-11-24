@@ -21,14 +21,21 @@ class MediaFile(Entity):
 
     @staticmethod
     def create(
-        title: str,
-        track_number: int,
-        disc_number: int,
-        year: int,
-        duration: float,
-        compilation: bool,
+        title: str | None,
+        track_number: int | None,
+        disc_number: int | None,
+        year: int | None,
+        duration: float | None,
+        compilation: bool | None,
         metadata: MediaFileMetadata
     ) -> "MediaFile":
+        title = title or "Untitled"
+        track_number = track_number or 0
+        disc_number = disc_number or 0
+        year = year or 0
+        duration = duration or 0.0
+        compilation = compilation or False
+
         return MediaFile(
             id=uuid4(),
             title=title,
