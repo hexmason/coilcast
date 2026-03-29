@@ -3,11 +3,6 @@ from dataclasses import dataclass, field
 
 @dataclass(frozen=True)
 class MediaFileMetadata:
-    path: str
-    size: int
-    mtime: float
-    hash: str
-    suffix: str
     # offset: float
     # subtrack: int
     bit_rate: int = field(default=0)

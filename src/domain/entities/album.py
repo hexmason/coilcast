@@ -4,10 +4,7 @@ from dataclasses import dataclass, field
 
 from domain.entities import Entity, MediaFile
 from domain.value_objects import ImageUrls
-from domain.exceptions import (
-        MediaFileExistsError,
-        MediaFileNotFoundError
-)
+from domain.exceptions import MediaFileExistsError, MediaFileNotFoundError
 
 
 @dataclass
@@ -30,7 +27,7 @@ class Album(Entity):
         compilation: bool | None,
         year: int | None,
         comment: str | None,
-        image_urls: ImageUrls | None
+        image_urls: ImageUrls | None,
     ) -> "Album":
         name = name or "Unknown Album"
         compilation = compilation or False
@@ -45,7 +42,7 @@ class Album(Entity):
             compilation=compilation,
             year=year,
             comment=comment,
-            image_urls=image_urls
+            image_urls=image_urls,
         )
 
     def increase_play_count(self) -> None:
@@ -61,8 +58,7 @@ class Album(Entity):
         self.compilation = self.compilation or media_file.compilation
 
     def remove_media_file(self, media_file_id: UUID) -> None:
-        media_file = next(
-            (m for m in self.media_files if m.id == media_file_id), None)
+        media_file = next((m for m in self.media_files if m.id == media_file_id), None)
         if not media_file:
             raise MediaFileNotFoundError(media_file_id)
 

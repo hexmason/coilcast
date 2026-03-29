@@ -3,7 +3,7 @@ from datetime import datetime
 from dataclasses import dataclass, field
 
 from domain.entities import Entity
-from domain.value_objects import MediaFileMetadata
+from domain.value_objects import MediaFileMetadata, FileInfo
 
 
 @dataclass
@@ -17,6 +17,7 @@ class MediaFile(Entity):
     duration: float
     compilation: bool
     metadata: MediaFileMetadata
+    file_info: FileInfo
     play_count: int = field(default=0)
 
     @staticmethod
@@ -27,6 +28,7 @@ class MediaFile(Entity):
         year: int | None,
         duration: float | None,
         compilation: bool | None,
+        file_info: FileInfo,
         metadata: MediaFileMetadata
     ) -> "MediaFile":
         title = title or "Untitled"
@@ -45,8 +47,12 @@ class MediaFile(Entity):
             year=year,
             duration=duration,
             compilation=compilation,
+            file_info=file_info,
             metadata=metadata
         )
+
+    def update_file_info(self, file_info) -> None:
+        self.file_info = file_info
 
     def update_metadata(self, metadata) -> None:
         self.metadata = metadata
