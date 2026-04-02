@@ -1,6 +1,8 @@
 .env
 venv/
+coilvenv/
 __pycache__/
 coilcast.db
 music/
 *.log
+
