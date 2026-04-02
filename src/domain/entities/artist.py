@@ -50,3 +50,6 @@ class Artist(Entity):
         album = next((a for a in self.albums if a.id == album_id), None)
         if not album:
             raise AlbumNotFoundError(album_id)
+
+        self.albums.remove(album)
+        self.album_count -= 1
