@@ -1,8 +1,8 @@
 import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 
-from infrastructure.db.base import Base
-from infrastructure.db.types import (
+from infrastructure.database.models.base import Base
+from infrastructure.database.types import (
     uuid_pk,
     created_at,
     updated_at

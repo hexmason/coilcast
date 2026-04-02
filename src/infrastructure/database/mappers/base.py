@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from typing import TypeVar, Protocol
 
-from domain.entities import Entity
-from infrastructure.database.base import Base
+from domain.entities.base import Entity
+from infrastructure.database.models.base import Base
 
 E = TypeVar("E", bound=Entity)
 M = TypeVar("M", bound=Base)

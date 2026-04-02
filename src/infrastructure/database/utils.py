@@ -1,5 +1,6 @@
-from infrastructure.db.base import engine, Base
-from infrastructure.models import *
+from infrastructure.database.engine import engine
+from infrastructure.database.models import *
+from infrastructure.database.models.base import Base
 
 
 async def init_database():

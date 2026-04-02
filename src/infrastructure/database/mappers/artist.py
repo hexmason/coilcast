@@ -1,6 +1,6 @@
 from domain.entities import Artist, Album, MediaFile
 from domain.value_objects import ImageUrls, MediaFileMetadata, FileInfo
-from infrastructure.database.mappers import Mapper
+from infrastructure.database.mappers.base import Mapper
 from infrastructure.database.models import (
         ArtistModel,
         AlbumModel,
@@ -36,7 +36,7 @@ class ArtistMapper(Mapper):
                             mtime=m.mtime,
                             hash=m.hash,
                             suffix=m.suffix
-                        )
+                        ),
                     )
                 )
             albums.append(
@@ -54,7 +54,8 @@ class ArtistMapper(Mapper):
                     ),
                     song_count=a.song_count,
                     duration=a.duration,
-                    play_count=a.play_count
+                    play_count=a.play_count,
+                    media_files=media_files,
                 )
             )
 
@@ -122,21 +123,21 @@ class ArtistMapper(Mapper):
                 media_file_model.year = m.year
                 media_file_model.duration = m.duration
                 media_file_model.compilation = m.compilation
-                media_file_model.path = m.path
-                media_file_model.size = m.size
-                media_file_model.mtime = m.mtime
-                media_file_model.hash = m.hash
-                media_file_model.suffix = m.suffix
-                media_file_model.bit_rate = m.bit_rate
-                media_file_model.bit_depth = m.bit_depth
-                media_file_model.sampling_rate = m.sampling_rate
-                media_file_model.channel_count = m.channel_count
+                media_file_model.path = m.file_info.path
+                media_file_model.size = m.file_info.size
+                media_file_model.mtime = m.file_info.mtime
+                media_file_model.hash = m.file_info.hash
+                media_file_model.suffix = m.file_info.suffix
+                media_file_model.bit_rate = m.metadata.bit_rate
+                media_file_model.bit_depth = m.metadata.bit_depth
+                media_file_model.sampling_rate = m.metadata.sampling_rate
+                media_file_model.channel_count = m.metadata.channel_count
 
                 new_media_files.append(media_file_model)
 
             album_model.media_files[:] = new_media_files
             new_albums.append(album_model)
 
-        artist_model.albums[:]
+        artist_model.albums[:] = new_albums
 
         return artist_model

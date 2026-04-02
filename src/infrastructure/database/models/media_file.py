@@ -2,8 +2,8 @@ from uuid import UUID
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from infrastructure.db.base import Base
-from infrastructure.db.types import (
+from infrastructure.database.models.base import Base
+from infrastructure.database.types import (
     uuid_pk,
     str_column,
     int_column,

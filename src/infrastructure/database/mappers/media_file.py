@@ -1,9 +1,7 @@
-from domain.entities import Album, MediaFile
+from domain.entities import MediaFile
 from domain.value_objects import MediaFileMetadata, FileInfo
-from infrastructure.database.mappers import Mapper
-from infrastructure.database.models import (
-        MediaFileModel
-)
+from infrastructure.database.mappers.base import Mapper
+from infrastructure.database.models import MediaFileModel
 
 
 class MediaFileMapper(Mapper):
@@ -33,5 +31,22 @@ class MediaFileMapper(Mapper):
         )
 
 
-    def to_model(self, entity: Album, existing: MediaFileModel | None) -> MediaFileModel:
-        raise NotImplementedError
+    def to_model(self, entity: MediaFile, existing: MediaFileModel | None) -> MediaFileModel:
+        media_file_model = existing or MediaFileModel(id=entity.id)
+        media_file_model.title = entity.title
+        media_file_model.track_number = entity.track_number
+        media_file_model.disc_number = entity.disc_number
+        media_file_model.created_at = entity.created_at
+        media_file_model.year = entity.year
+        media_file_model.duration = entity.duration
+        media_file_model.compilation = entity.compilation
+        media_file_model.path = entity.file_info.path
+        media_file_model.size = entity.file_info.size
+        media_file_model.mtime = entity.file_info.mtime
+        media_file_model.hash = entity.file_info.hash
+        media_file_model.suffix = entity.file_info.suffix
+        media_file_model.bit_rate = entity.metadata.bit_rate
+        media_file_model.bit_depth = entity.metadata.bit_depth
+        media_file_model.sampling_rate = entity.metadata.sampling_rate
+        media_file_model.channel_count = entity.metadata.channel_count
+        return media_file_model
