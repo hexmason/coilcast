@@ -12,7 +12,7 @@ from infrastructure.repositories import (
 
 
 class UnitOfWork:
-    def __init__(self, session_factory: Callable[[], Awaitable[AsyncSession]]):
+    def __init__(self, session_factory):
         self._session_factory = session_factory
         self._session: AsyncSession
 
@@ -23,7 +23,7 @@ class UnitOfWork:
         self._user_repo: UserRepository | None = None
 
     async def __aenter__(self) -> "UnitOfWork":
-        self._session: AsyncSession = await self._session_factory()
+        self._session: AsyncSession = self._session_factory()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

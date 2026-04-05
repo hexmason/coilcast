@@ -138,6 +138,7 @@ class ArtistMapper(Mapper):
                 media_file_model.bit_depth = m.metadata.bit_depth
                 media_file_model.sampling_rate = m.metadata.sampling_rate
                 media_file_model.channel_count = m.metadata.channel_count
+                media_file_model.artist_id = m.artist_id
 
                 new_media_files.append(media_file_model)
 
