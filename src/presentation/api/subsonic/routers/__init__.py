@@ -1,19 +1,7 @@
-# from fastapi import APIRouter, Response
-# from presentation.schemas.responses import SubsonicResponseFactory
-# from presentation.api.routers.subsonic.dependencies import ParametersDep
-#
-# router = APIRouter()
-#
-# @router.get("/ping")
-# async def ping(params: ParametersDep) -> Response:
-#    return SubsonicResponseFactory(response_format=params.f).get_response()
-#
-#
-# @router.get("/getLicense")
-# async def get_license(params: ParametersDep) -> Response:
-#    return SubsonicResponseFactory(response_format=params.f).get_response()
-#
-#
-# @router.get("/getOpenSubsonicExtensions")
-# async def get_open_subsonic_extensions(params: ParametersDep) -> Response:
-#    return SubsonicResponseFactory(response_format=params.f).get_response()
+from fastapi import APIRouter
+
+from presentation.api.subsonic.routers.system import router as system_router
+
+subsonic_router = APIRouter()
+
+subsonic_router.include_router(system_router)
