@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from presentation.api.subsonic.routers.system import router as system_router
+from presentation.api.subsonic.routers.system import system_router
 
 subsonic_router = APIRouter()
 
