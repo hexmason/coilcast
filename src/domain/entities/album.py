@@ -16,6 +16,8 @@ class Album(Entity):
     compilation: bool
     comment: str
     image_urls: ImageUrls
+    artist_id: UUID | None
+    artist_name: str
     song_count: int = field(default=0)
     duration: float = field(default=0.0)
     play_count: int = field(default=0)
@@ -27,12 +29,15 @@ class Album(Entity):
         compilation: bool | None,
         year: int | None,
         comment: str | None,
+        artist_id: UUID | None,
+        artist_name: str,
         image_urls: ImageUrls | None,
     ) -> "Album":
-        name = name or "Unknown Album"
+        name = name or "Unknown album"
         compilation = compilation or False
         year = year or 0
         comment = comment or ""
+        artist_name = artist_name or "Unknown artist"
         image_urls = image_urls or ImageUrls()
 
         return Album(
@@ -42,6 +47,8 @@ class Album(Entity):
             compilation=compilation,
             year=year,
             comment=comment,
+            artist_id=artist_id,
+            artist_name=artist_name,
             image_urls=image_urls,
         )
 

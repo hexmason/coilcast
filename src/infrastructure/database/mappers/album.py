@@ -30,7 +30,11 @@ class AlbumMapper(Mapper):
                         mtime=m.mtime,
                         hash=m.hash,
                         suffix=m.suffix
-                    )
+                    ),
+                    artist_id=model.artist_id,
+                    artist_name=model.artist.name,
+                    album_id=model.id,
+                    album_name=model.name
                 )
             )
         return Album(
@@ -45,6 +49,8 @@ class AlbumMapper(Mapper):
                 medium=model.medium_image_url,
                 large=model.large_image_url
             ),
+            artist_id=model.artist_id,
+            artist_name=model.artist.name,
             song_count=model.song_count,
             duration=model.duration,
             play_count=model.play_count,

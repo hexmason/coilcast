@@ -37,6 +37,10 @@ class ArtistMapper(Mapper):
                             hash=m.hash,
                             suffix=m.suffix
                         ),
+                        artist_id=model.id,
+                        artist_name=model.name,
+                        album_id=a.id,
+                        album_name=a.name
                     )
                 )
             albums.append(
@@ -52,6 +56,8 @@ class ArtistMapper(Mapper):
                         medium=a.medium_image_url,
                         large=a.large_image_url
                     ),
+                    artist_id=a.artist_id,
+                    artist_name=a.artist_name,
                     song_count=a.song_count,
                     duration=a.duration,
                     play_count=a.play_count,

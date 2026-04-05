@@ -18,6 +18,10 @@ class MediaFile(Entity):
     compilation: bool
     metadata: MediaFileMetadata
     file_info: FileInfo
+    artist_id: UUID | None
+    artist_name: str
+    album_id: UUID | None
+    album_name: str
     play_count: int = field(default=0)
 
     @staticmethod
@@ -28,6 +32,10 @@ class MediaFile(Entity):
         year: int | None,
         duration: float | None,
         compilation: bool | None,
+        artist_id: UUID,
+        artist_name: str | None,
+        album_id: UUID,
+        album_name: str | None,
         file_info: FileInfo,
         metadata: MediaFileMetadata
     ) -> "MediaFile":
@@ -37,6 +45,8 @@ class MediaFile(Entity):
         year = year or 0
         duration = duration or 0.0
         compilation = compilation or False
+        album_name = album_name or "Unknown album"
+        artist_name = artist_name or "Unknown artist"
 
         return MediaFile(
             id=uuid4(),
@@ -47,6 +57,10 @@ class MediaFile(Entity):
             year=year,
             duration=duration,
             compilation=compilation,
+            artist_id=artist_id,
+            artist_name=artist_name,
+            album_id=album_id,
+            album_name=album_name,
             file_info=file_info,
             metadata=metadata
         )
