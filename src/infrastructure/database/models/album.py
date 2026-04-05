@@ -6,6 +6,7 @@ from infrastructure.database.models.base import Base
 from infrastructure.database.types import (
     uuid_pk,
     str_column,
+    str_column_indexed,
     int_column,
     float_column,
     bool_column,
@@ -17,7 +18,7 @@ class AlbumModel(Base):
     __tablename__ = "album"
 
     id: Mapped[uuid_pk]
-    name: Mapped[str_column]
+    name: Mapped[str_column_indexed]
     created_at: Mapped[created_at]
     year: Mapped[int_column]
     compilation: Mapped[bool_column]
@@ -30,7 +31,8 @@ class AlbumModel(Base):
     play_count: Mapped[int_column]
 
     artist_id: Mapped[UUID] = mapped_column(
-        ForeignKey("artist.id"))
+        ForeignKey("artist.id"),
+        index=True)
     artist = relationship("ArtistModel", back_populates="albums")
     media_files = relationship(
         "MediaFileModel",

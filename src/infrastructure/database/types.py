@@ -7,13 +7,21 @@ from sqlalchemy.orm import mapped_column
 uuid_pk = Annotated[
                 UUID,
                 mapped_column(default=uuid4,
-                              primary_key=True)]
+                              primary_key=True,
+                              index=True)]
 
 str_column = Annotated[
                 str,
                 mapped_column(String(255),
                               default="",
                               nullable=False)]
+
+str_column_indexed = Annotated[
+                str,
+                mapped_column(String(255),
+                              default="",
+                              nullable=False,
+                              index=True)]
 
 int_column = Annotated[
                 int,
