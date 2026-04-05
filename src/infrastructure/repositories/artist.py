@@ -22,7 +22,8 @@ class ArtistRepository(SQLAlchemyRepository[Artist, ArtistModel]):
 
     async def get_all_full(self) -> list[Artist]:
         stmt = select(ArtistModel).options(
-            selectinload(ArtistModel.albums).selectinload(AlbumModel.media_files)
+            selectinload(ArtistModel.albums)
+            .selectinload(AlbumModel.media_files)
         )
         result = await self._session.execute(stmt)
         models = result.scalars().all()

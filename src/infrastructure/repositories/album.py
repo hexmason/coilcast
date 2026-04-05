@@ -1,4 +1,6 @@
+from uuid import UUID
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 from domain.entities import Album
 from infrastructure.database.models import AlbumModel
@@ -17,5 +19,14 @@ class AlbumRepository(SQLAlchemyRepository[Album, AlbumModel]):
             return None
         return self._mapper.to_domain(model)
 
-    async def save(self, entity: Album) -> None:
-        await super().save(entity)
+    async def get_by_id_with_songs(self, id: UUID) -> list[Album]:
+        stmt = (
+            select(AlbumModel)
+            .where(AlbumModel.id == id)
+            .options(
+                selectinload(AlbumModel.media_files)
+            )
+        )
+        result = await self._session.execute(stmt)
+        models = result.scalars().all()
+        return [self._mapper.to_domain(model) for model in models]
