@@ -3,7 +3,8 @@ services:
     image: coilcast:latest
     build: .
     container_name: coilcast-app
-    ports: "${HTTP_PORT}:8080"
+    ports: 
+      - "${HTTP_PORT}:8080"
     environment:
       # Coilcast application settings
       ADMIN_LOGIN: "${ADMIN_LOGIN}"
@@ -18,19 +19,21 @@ services:
       DB_PASS: "${DB_PASS}"
       DB_HOST: "${DB_HOST}"
       DB_PORT: "${DB_PORT}"
+    volumes:
+      - ./music:/app/coilcast/music
     networks:
       - coilcast
     restart: unless-stopped
 
   postgres:
-    image: postgres
+    image: postgres:latest
     container_name: coilcast-db
     environment:
       POSTGRES_USER: "${DB_USER}"
       POSTGRES_PASSWORD: "${DB_PASS}"
       POSTGRES_DB: "${DB_NAME}"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - coilcast
     restart: unless-stopped
@@ -40,4 +43,4 @@ networks:
     driver: bridge
 
 volumes:
-  pgdata:
+  postgres-data:
