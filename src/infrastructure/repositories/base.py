@@ -1,5 +1,5 @@
 from uuid import UUID
-from typing import AsyncIterator, Generic, TypeVar, Type
+from typing import Generic, TypeVar, Type
 from sqlalchemy import select
 
 from domain.entities.base import Entity
