@@ -19,14 +19,17 @@ class AlbumRepository(SQLAlchemyRepository[Album, AlbumModel]):
             return None
         return self._mapper.to_domain(model)
 
-    async def get_by_id_with_songs(self, id: UUID) -> list[Album]:
+    async def get_by_id_with_songs(self, id: UUID) -> Album | None:
         stmt = (
             select(AlbumModel)
             .where(AlbumModel.id == id)
             .options(
+                selectinload(AlbumModel.artist),
                 selectinload(AlbumModel.media_files)
             )
         )
         result = await self._session.execute(stmt)
-        models = result.scalars().all()
-        return [self._mapper.to_domain(model) for model in models]
+        model = result.scalar_one_or_none()
+        if not model:
+            return None
+        return self._mapper.to_domain(model)
