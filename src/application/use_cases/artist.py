@@ -1,20 +1,19 @@
 from uuid import UUID
-from fastapi import Depends
 
-from infrastructure.repositories.artist import ArtistRepository
-
-
-class GetArtistWithAlbumsUseCase():
-    def __init__(self, repo: ArtistRepository = Depends()) -> None:
-        self.repo = repo
-
-    async def execute(self, id: UUID):
-        return await self.repo.get_by_id_with_albums(id)
+from infrastructure.database.unit_of_work import UnitOfWork
 
 
-class GetArtistsUseCase():
-    def __init__(self, repo: ArtistRepository = Depends()) -> None:
-        self.repo = repo
+class GetArtistWithAlbumsUseCase:
+    def __init__(self, uow: UnitOfWork) -> None:
+        self._uow = uow
 
     async def execute(self, id: UUID):
-        return await self.repo.get_all()
+        return await self._uow.artist_repo.get_by_id_with_albums(id)
+
+
+class GetArtistsUseCase:
+    def __init__(self, uow: UnitOfWork) -> None:
+        self._uow = uow
+
+    async def execute(self):
+        return await self._uow.artist_repo.get_all()
