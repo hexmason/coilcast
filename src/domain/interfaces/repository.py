@@ -1,6 +1,6 @@
 from uuid import UUID
 from abc import abstractmethod
-from typing import AsyncIterator, Protocol, TypeVar
+from typing import Protocol, TypeVar
 
 from domain.entities.base import Entity
 
@@ -12,7 +12,7 @@ class Repository(Protocol[E]):
     async def get_by_id(self, id: UUID) -> E | None: ...
 
     @abstractmethod
-    def get_all(self) -> AsyncIterator[Entity]: ...
+    async def get_all(self) -> list[E]: ...
 
     @abstractmethod
     async def save(self, entity: E) -> None: ...

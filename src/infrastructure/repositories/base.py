@@ -25,11 +25,11 @@ class SQLAlchemyRepository(Repository[E], Generic[E, M]):
             return None
         return self._mapper.to_domain(model)
 
-    async def get_all(self) -> AsyncIterator[E]:
+    async def get_all(self) -> list[E]:
         stmt = select(self._model)
-        stream = await self._session.stream_scalars(stmt)
-        async for model in stream:
-            yield self._mapper.to_domain(model)
+        result = await self._session.execute(stmt)
+        models = result.scalars().all()
+        return [self._mapper.to_domain(model) for model in models]
 
     async def save(self, entity: E) -> None:
         existing = await self._session.get(self._model, entity.id)

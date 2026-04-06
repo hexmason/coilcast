@@ -57,7 +57,7 @@ class ArtistMapper(Mapper):
                         large=a.large_image_url
                     ),
                     artist_id=a.artist_id,
-                    artist_name=a.artist_name,
+                    artist_name=a.artist.name,
                     song_count=a.song_count,
                     duration=a.duration,
                     play_count=a.play_count,
