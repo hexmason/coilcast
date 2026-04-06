@@ -1,5 +1,5 @@
 from fastapi import Response
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from typing import Any
 import xml.etree.ElementTree as ET
 
@@ -15,11 +15,13 @@ def build_response(data: dict, response_format: str = "xml") -> Response:
         return _build_xml_response(data, status)
 
 
-def build_error_response(error_code: int, response_format: str = "xml") -> Response:
+def build_error_response(
+    error_code: int, response_format: str = "xml", message: str | None = None
+) -> Response:
     data = {
         "error": {
             "@code": error_code,
-            "@message": ERROR_MESSAGES.get(error_code)
+            "@message": message or ERROR_MESSAGES.get(error_code)
         }
     }
     status = "failed"
@@ -47,7 +49,7 @@ def _build_json_response(data: dict, status: str) -> JSONResponse:
     )
 
 
-def _build_xml_response(data: dict, status: str) -> HTMLResponse:
+def _build_xml_response(data: dict, status: str) -> Response:
     root = ET.Element("subsonic-response", {
         "status": status,
         "version": REST_API_VERSION,
@@ -59,7 +61,10 @@ def _build_xml_response(data: dict, status: str) -> HTMLResponse:
         data=data
     )
 
-    return HTMLResponse(ET.tostring(root, encoding="utf-8", xml_declaration=True))
+    return Response(
+        content=ET.tostring(root, encoding="utf-8", xml_declaration=True),
+        media_type="application/xml",
+    )
 
 
 def _build_json_response_data_from_dict(data) -> Any:
