@@ -6,6 +6,9 @@ from infrastructure.database.models import MediaFileModel
 
 class MediaFileMapper(Mapper):
     def to_domain(self, model: MediaFileModel) -> MediaFile:
+        album = model.album
+        artist = album.artist if album else None
+
         return MediaFile(
             id=model.id,
             title=model.title,
@@ -27,7 +30,11 @@ class MediaFileMapper(Mapper):
                 mtime=model.mtime,
                 hash=model.hash,
                 suffix=model.suffix
-            )
+            ),
+            artist_id=model.artist_id,
+            artist_name=artist.name if artist else "",
+            album_id=model.album_id,
+            album_name=album.name if album else "",
         )
 
 
