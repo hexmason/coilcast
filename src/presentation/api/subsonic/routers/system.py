@@ -1,7 +1,4 @@
 from fastapi import APIRouter, Response, Query, Depends
-
-# from presentation.schemas.responses import SubsonicResponseFactory
-from presentation.api.subsonic.routers.dependencies import SubsonicAuthContext
 from presentation.api.subsonic.response_builder import (
     build_error_response,
     build_response,
