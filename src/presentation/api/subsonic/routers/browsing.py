@@ -1,4 +1,9 @@
 from fastapi import APIRouter, Response, Query, Depends
+from application.use_cases.artist import GetArtistWithAlbumsUseCase, GetArtistsUseCase
+from application.use_cases.album import GetAlbumWithSongsUseCase
+from presentation.api.subsonic.mappers.artist import to_get_artist_response
+from presentation.api.subsonic.mappers.album import to_get_album_response
+
 from presentation.api.subsonic.response_builder import (
     build_error_response,
     build_response,
@@ -7,10 +12,6 @@ from presentation.api.subsonic.routers.dependencies import (
     SubsonicAuthContext,
     subsonic_auth,
 )
-from application.use_cases.artist import GetArtistWithAlbumsUseCase, GetArtistsUseCase
-from application.use_cases.album import GetAlbumWithSongsUseCase
-from presentation.api.subsonic.mappers.artist import to_get_artist_response
-from presentation.api.subsonic.mappers.album import to_get_album_response
 
 browsing_router = APIRouter()
 
@@ -48,20 +49,5 @@ async def get_artist(
     artist = use_case.execute(id)
 
     data = to_get_artist_response(artist)
-
-    return build_response(data, f)
-
-
-@browsing_router.get("/getAlbum")
-async def get_album(
-    id: int = Query(...),
-    auth: SubsonicAuthContext = Depends(subsonic_auth),
-    f: str = Query("json"),
-    use_case: GetAlbumWithSongsUseCase = Depends(),
-) -> Response:
-
-    album = use_case.execute(id)
-
-    data = to_get_album_response(album)
 
     return build_response(data, f)
